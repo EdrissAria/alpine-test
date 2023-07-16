@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./alpine.js" defer></script>
+    <script src="./tailwind.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+      [x-cloak] {
+        display: none;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container mx-3">
+      <h1 class="text-5xl mb-4">this is a simple alpine js app</h1>
+      <div
+        x-data="{ 
+        open:false, 
+        name: 'edriss',
+        search: '',
+        posts: [
+          {
+            title: 'post one',
+          },
+          {
+            title: 'post two',
+          },
+          {
+            title: 'post three',
+          },
+        ]
+      }"
+      >
+        <button
+          x-on:click="open=!open"
+          x-bind:class="open ? 'bg-blue-700':'bg-slate-700'"
+          class="text-white px-4 py-2 rounded-xl"
+        >
+          Toggle
+        </button>
+        <div x-show="open" x-cloak x-transition>
+          <p class="bg-gray-200 mx-3 p-4 my-6 rounded">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus,
+            odio neque fugit quo nisi labore asperiores ratione eaque expedita
+            odit veritatis, quam quos fuga nostrum maxime dolor. Necessitatibus,
+            error eos.
+          </p>
+        </div>
+
+        <div class="my-4">
+          <p>
+            the value of name is <span class="font-bold" x-text="name"></span>
+          </p>
+        </div>
+
+        <!-- x-effect -->
+
+        <div x-effect="console.log('hey from console')"></div>
+
+        <!--x-model-->
+
+        <input
+          placeholder="search here.."
+          x-model="search"
+          type="text"
+          class="border p-2 w-full mb-2 mt-6"
+        />
+        <p>
+          <span class="font-bold">search for:</span>
+          <span x-text="search"></span>
+        </p>
+
+        <!-- x-if -->
+
+        <template x-if="open">
+          <div class="bg-gray-50 p-2 mt-8">template based on a condition</div>
+        </template>
+
+        <!-- x-for -->
+
+        <h3 class="text-2xl mt-6 mb-3 font-bold">Posts</h3>
+        <template x-for="post in posts">
+          <div x-text="post.title"></div>
+        </template>
+        <button
+          @click="posts.push({title: 'New title'})"
+          class="bg-blue-800 text-white px-4 rounded py-2 mt-4"
+        >
+          Add Post
+        </button>
+
+        <!-- x-ref -->
+
+        <div class="mt-4">
+          <div x-ref="text"></div>
+
+          <button
+            @click="$refs.text.innerText='hello world'"
+            class="rounded bg-blue-300 p-2 mt-3 text-white"
+          >
+            click
+          </button>
+        </div>
+
+        <!-- x-html -->
+
+        <div x-html="(await axios.get('./partial.html')).data"></div>
+
+        <!-- $el -->
+
+        <button
+          @click="$el.innerHTML='hello world'"
+          class="border p-2 mt-3 rounded"
+        >
+          Replace text
+        </button>
+
+        <!-- x-init -->
+        <div x-init="$watch('posts', value=>console.log(value))"></div>
+
+        <!-- $dispatch -->
+
+        <div @notify="alert('you have been notified !!!')">
+          <button
+            class="rounded text-white bg-green-300 p-2 mt-4"
+            @click="$dispatch('notify')"
+          >
+            Notify
+          </button>
+        </div>
+
+        <!-- $data -->
+
+        <button
+          @click="getLatest($data.posts)"
+          class="p-2 rounded text-white bg-red-500 mt-4"
+        >
+          get latest post
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function getLatest(posts) {
+        console.log(posts.slice(-1).pop());
+      }
+    </script>
+  </body>
+</html>

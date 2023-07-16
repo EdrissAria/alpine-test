@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./alpine.js" defer></script>
+    <script src="./tailwind.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div
+      x-data
+      :class="$store.darkMode.on && 'bg-gray-800 text-white'"
+      class="container mx-auto max-w-sm mt-6 bg-gray-50 p-4"
+    >
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum earum
+      iste minima reprehenderit culpa eaque labore impedit molestiae,
+      exercitationem illum quia tenetur excepturi recusandae vero dolore sed
+      laboriosam quas? Reprehenderit.
+
+      <button
+        class="block mt-4 text-xs bg-gray-200 px-4 py-2"
+        :class="$store.darkMode.on && 'bg-gray-500'"
+        @click="$store.darkMode.toggle()"
+      >
+        TOGGLE DARK MODE
+      </button>
+    </div>
+
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("darkMode", {
+          on: false,
+
+          toggle() {
+            this.on = !this.on;
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
